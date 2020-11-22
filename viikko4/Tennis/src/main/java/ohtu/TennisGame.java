@@ -1,80 +1,43 @@
 package ohtu;
 
 public class TennisGame {
-    
-    private int m_score1 = 0;
-    private int m_score2 = 0;
-    private String player1Name;
-    private String player2Name;
 
-    public TennisGame(String player1Name, String player2Name) {
-        this.player1Name = player1Name;
-        this.player2Name = player2Name;
-    }
+	private int m_score1 = 0;
+	private int m_score2 = 0;
+	private String player1Name;
+	private String player2Name;
+	private final String[] tieScores = { "Love-All", "Fifteen-All", "Thirty-All", "Forty-All", "Deuce" };
+	private final String[] scores = { "Love", "Fifteen", "Thirty", "Forty" };
 
-    public void wonPoint(String playerName) {
-        if (playerName == "player1")
-            m_score1 += 1;
-        else
-            m_score2 += 1;
-    }
+	public TennisGame(String player1Name, String player2Name) {
+		this.player1Name = player1Name;
+		this.player2Name = player2Name;
+	}
 
-    public String getScore() {
-        String score = "";
-        int tempScore=0;
-        if (m_score1==m_score2)
-        {
-            switch (m_score1)
-            {
-                case 0:
-                        score = "Love-All";
-                    break;
-                case 1:
-                        score = "Fifteen-All";
-                    break;
-                case 2:
-                        score = "Thirty-All";
-                    break;
-                case 3:
-                        score = "Forty-All";
-                    break;
-                default:
-                        score = "Deuce";
-                    break;
-                
-            }
-        }
-        else if (m_score1>=4 || m_score2>=4)
-        {
-            int minusResult = m_score1-m_score2;
-            if (minusResult==1) score ="Advantage player1";
-            else if (minusResult ==-1) score ="Advantage player2";
-            else if (minusResult>=2) score = "Win for player1";
-            else score ="Win for player2";
-        }
-        else
-        {
-            for (int i=1; i<3; i++)
-            {
-                if (i==1) tempScore = m_score1;
-                else { score+="-"; tempScore = m_score2;}
-                switch(tempScore)
-                {
-                    case 0:
-                        score+="Love";
-                        break;
-                    case 1:
-                        score+="Fifteen";
-                        break;
-                    case 2:
-                        score+="Thirty";
-                        break;
-                    case 3:
-                        score+="Forty";
-                        break;
-                }
-            }
-        }
-        return score;
-    }
+	public void wonPoint(String playerName) {
+		if (playerName == player1Name)
+			m_score1 += 1;
+		else
+			m_score2 += 1;
+	}
+
+	public String getScore() {
+		String score;
+		if (m_score1 == m_score2) {
+			score = tieScores[m_score1];
+		} else if (m_score1 >= 4 || m_score2 >= 4) {
+			int scoreDifference = m_score1 - m_score2;
+			if (scoreDifference == 1)
+				score = String.format("Advantage %s", player1Name);
+			else if (scoreDifference == -1)
+				score = String.format("Advantage %s", player2Name);
+			else if (scoreDifference >= 2)
+				score = String.format("Win for %s", player1Name);
+			else
+				score = String.format("Win for %s", player2Name);
+		} else {
+			score = String.format("%s-%s", scores[m_score1], scores[m_score2]);
+		}
+		return score;
+	}
 }
